@@ -156,14 +156,21 @@ const runPatAddCommand = async (args: AddArgs): Promise<number> => {
       );
     }
 
-    if (!args.pat) {
+    let patToken = args.pat;
+    if (!patToken) {
+      if (args.noInteractive) {
+        throw new ProfileError('PAT is required in --no-interactive mode.', ExitCode.INVALID_INPUT);
+      }
+      patToken = await ask('Enter your GitHub Personal Access Token (PAT): ');
+    }
+    if (!patToken) {
       throw new ProfileError('PAT is required for PAT-based profiles.', ExitCode.INVALID_INPUT);
     }
 
     printHuman('Validating PAT with GitHub...');
     let identity: { login: string };
     try {
-      identity = await validatePat(args.pat);
+      identity = await validatePat(patToken);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'PAT validation failed';
       throw new ProfileError(message, ExitCode.INVALID_INPUT);
@@ -209,11 +216,11 @@ const runPatAddCommand = async (args: AddArgs): Promise<number> => {
 
     await addProfile(profileToAdd);
 
-    await storePatForProfile(args.name, args.pat);
+    await storePatForProfile(args.name, patToken);
 
     ensureCredentialHelperAdded();
 
-    args.pat = '';
+    patToken = '';
 
     const payload = {
       profile: {
