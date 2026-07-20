@@ -16,11 +16,11 @@ export const runVerifyCommitCommand = async (): Promise<number> => {
 
     const expectedProfile: string | null = getExpectedProfile();
 
-    if (expectedProfile && currentIdentity && expectedProfile !== currentIdentity) {
+    if (expectedProfile && expectedProfile !== currentIdentity) {
       printError(
-        `\n✗ Commit Blocked!\nYou are trying to commit with '${currentIdentity}' \nCommits are allowed to the profile : '${expectedProfile}'\n\nPlease switch to the correct profile,\nRun: gpx use ${expectedProfile}\n`
+        `\n✗ Commit Blocked!\nYou are trying to commit with '${currentIdentity || 'no profile'}' \nCommits are allowed to the profile : '${expectedProfile}'\n\nPlease switch to the correct profile,\nRun: gpx use ${expectedProfile}\n`
       );
-      return 1;
+      return ExitCode.PROFILE_NOT_FOUND;
     }
 
     return ExitCode.SUCCESS;

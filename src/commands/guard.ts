@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import {
   isInsideGitRepo,
   getGitRepoRoot,
@@ -42,10 +43,18 @@ export const runGuardCommand = async (): Promise<number> => {
       setExpectedProfile(expectedProfile);
       printHuman(`Locked this repository to the profile: '${expectedProfile}'`);
     } else {
-      printHuman(`Could not determine an active profile to lock.`);
+      throw new ProfileError(
+        `Could not determine an active profile to lock.`,
+        ExitCode.PROFILE_NOT_FOUND
+      );
     }
 
-    const hooksDir = path.join(repoRoot, '.git', 'hooks');
+    const result = spawnSync('git', ['rev-parse', '--git-path', 'hooks'], {
+      cwd: repoRoot,
+      encoding: 'utf-8',
+    });
+    const gitHooksPath = (result.stdout || '').trim() || path.join('.git', 'hooks');
+    const hooksDir = path.resolve(repoRoot, gitHooksPath);
     const preCommitHookPath = path.join(hooksDir, 'pre-commit');
 
     if (!fs.existsSync(hooksDir)) {

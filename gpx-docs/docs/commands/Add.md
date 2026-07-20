@@ -19,7 +19,6 @@ gpx add <profile_name>
 | `--email [email]` | The email that will appear on your Git commits |
 | `--ssh-key [path]` | Path to an existing SSH private key to use |
 | `--generate-ssh` | Automatically generate a new SSH key pair for this profile |
-| `--pat [token]` | Provide a Personal Access Token (PAT) securely |
 | `--gpg-key [key]` | GPG key ID for signing commits |
 | `--signing` | Enable GPG commit signing |
 | `--no-interactive` | Disable prompts (useful for scripts and CI) |
@@ -66,15 +65,16 @@ gpx add freelance \
   --auth-method pat \
   --display-name "Ada Freelance" \
   --email "ada@clientco.com" \
-  --pat "github_pat_11ABC..." \
   --no-interactive
 ```
+
+*You will be securely prompted for your PAT during setup, or you can set it later using `gpx pat set freelance`*
 
 ## What happens behind the scenes
 
 When you add a new profile:
 1. **For SSH profiles:** gpx registers the new identity. If you chose to generate an SSH key, it creates an `id_ed25519` key pair. It then creates a dedicated `Host` block in `~/.ssh/config` so SSH automatically knows to use this key when cloning via the gpx host alias.
-2. **For PAT profiles:** gpx validates your PAT against the GitHub API, retrieves your GitHub username, and securely stores the PAT in your OS native credential manager.
+2. **For PAT profiles:** gpx validates your PAT against the GitHub API, retrieves your GitHub username, and securely stores the PAT in your OS native credential manager (macOS/Linux) or a secure per-profile JSON file (Windows).
 3. The profile details are saved to `~/.gpx/profiles.json`.
 
 ## Related commands

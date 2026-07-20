@@ -39,7 +39,7 @@ export const runInitCommand = async (args: InitArgs): Promise<number> => {
 
     if (currentContent.includes(scriptStart) && currentContent.includes(scriptEnd)) {
       const startIdx = currentContent.indexOf(scriptStart);
-      const endIdx = currentContent.indexOf(scriptEnd) + scriptEnd.length;
+      const endIdx = currentContent.indexOf(scriptEnd, startIdx) + scriptEnd.length;
 
       const newContent =
         currentContent.substring(0, startIdx) +

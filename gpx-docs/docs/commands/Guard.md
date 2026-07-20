@@ -26,7 +26,7 @@ gpx guard
 
 Expected output:
 ```
-Locked this repository to the 'work' profile.
+Locked this repository to the profile: 'work'
 Commit guard activated! 🛡️
 ```
 

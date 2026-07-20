@@ -111,8 +111,8 @@ Expected output:
 ## What happens behind the scenes
 
 gpx checks your current context by:
-1. Reading `.git/config` (if inside a repository) to see if a local identity is set that matches a gpx profile.
-2. Reading `~/.gpx/active.json` to check the global fallback profile.
+1. Reading `~/.gpx/active.json` to determine the globally active profile.
+2. Reading `.git/config` (if inside a repository) to see if a local identity override is set.
 3. Checking the repository's `.git/hooks/pre-commit` script to see if the Commit Guard is active.
 
 ## Related commands

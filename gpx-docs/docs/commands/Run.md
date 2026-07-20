@@ -22,7 +22,7 @@ gpx run work git push origin main
 ```
 
 Expected output:
-```
+```text
 Command executed as work
 ```
 

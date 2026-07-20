@@ -23,7 +23,7 @@ gpx show work
 ```
 
 Expected output:
-```
+```text
 Profile: work
 Display name: Ada Lovelace
 Email: ada@company.com

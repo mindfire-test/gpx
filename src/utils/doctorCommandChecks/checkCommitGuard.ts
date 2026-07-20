@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import type { CheckResult } from '../../lib/types/CheckResult.type';
 import { isInsideGitRepo, getGitRepoRoot, getExpectedProfile } from '../../core/gitconfig';
 
@@ -21,7 +22,12 @@ export const checkCommitGuard = (): CheckResult => {
     };
   }
 
-  const preCommitPath = path.join(repoRoot, '.git', 'hooks', 'pre-commit');
+  const result = spawnSync('git', ['rev-parse', '--git-path', 'hooks'], {
+    cwd: repoRoot,
+    encoding: 'utf-8',
+  });
+  const gitHooksPath = (result.stdout || '').trim() || path.join('.git', 'hooks');
+  const preCommitPath = path.join(path.resolve(repoRoot, gitHooksPath), 'pre-commit');
   if (fs.existsSync(preCommitPath)) {
     const hookContent = fs.readFileSync(preCommitPath, { encoding: 'utf-8' });
     if (hookContent.includes('gpx verify-commit')) {

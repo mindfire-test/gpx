@@ -24,7 +24,7 @@ gpx config get auto-detect
 
 Expected output:
 ```
-auto_detect = false
+auto-detect = false
 ```
 
 ### Change a setting

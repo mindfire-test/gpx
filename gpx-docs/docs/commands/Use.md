@@ -30,7 +30,7 @@ gpx use work
 ```
 
 Expected output:
-```
+```text
 Switched to work (global)
 ```
 
@@ -43,7 +43,7 @@ gpx use freelance --local
 ```
 
 Expected output:
-```
+```text
 Switched to freelance (local)
 ```
 

@@ -67,9 +67,9 @@ export const runCurrentCommand = async (json: boolean): Promise<number> => {
     const repoRoot = inRepo ? getGitRepoRoot() : null;
 
     if (activeScope === 'local') {
-      printHuman(`Active profile: ${fmt.green(`${activeProfile}`)} (local override)`);
-      printHuman(`  Name:   ${fmt.green(`${localIdentity?.name}`) ?? 'not set'}`);
-      printHuman(`  Email:  ${fmt.green(`${localIdentity?.email}`) ?? 'not set'}`);
+      printHuman(`Active profile: ${fmt.green(activeProfile || 'unknown')} (local override)`);
+      printHuman(`  Name:   ${fmt.green(localIdentity?.name ?? 'not set')}`);
+      printHuman(`  Email:  ${fmt.green(localIdentity?.email ?? 'not set')}`);
       printHuman(`  Scope:  local (${repoRoot || 'unknown'})`);
       if (globalProfileName) {
         printHuman(
@@ -79,9 +79,9 @@ export const runCurrentCommand = async (json: boolean): Promise<number> => {
         printHuman(`  Global: not set`);
       }
     } else {
-      printHuman(`Active profile: ${fmt.green(`${activeProfile}`) ?? 'none'}`);
-      printHuman(`  Name:   ${fmt.green(`${globalIdentity.name}`) ?? 'not set'}`);
-      printHuman(`  Email:  ${fmt.green(`${globalIdentity.email}`) ?? 'not set'}`);
+      printHuman(`Active profile: ${fmt.green(activeProfile || 'none')}`);
+      printHuman(`  Name:   ${fmt.green(globalIdentity.name ?? 'not set')}`);
+      printHuman(`  Email:  ${fmt.green(globalIdentity.email ?? 'not set')}`);
       printHuman(`  Scope:  global`);
     }
 
