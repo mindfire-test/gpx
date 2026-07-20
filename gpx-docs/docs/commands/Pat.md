@@ -39,7 +39,7 @@ gpx pat set freelance --pat "github_pat_11ABC..."
 
 ### Clear a stored PAT
 
-To securely remove a stored PAT from your operating system credential manager:
+To securely remove a stored PAT from your operating system credential manager (or local secure file on Windows):
 
 ```bash
 gpx pat clear freelance
@@ -50,8 +50,9 @@ gpx pat clear freelance
 When you set a PAT, gpx validates it against the GitHub API. If valid, it stores it securely using:
 - **macOS:** Keychain Access (`security` CLI)
 - **Linux:** Secret Service API / GNOME Keyring (`secret-tool`)
+- **Windows:** Secure per-profile JSON file (`~/.gpx/credentials/`)
 
-When you clear a PAT, gpx asks the respective OS credential manager to delete the secret permanently.
+When you clear a PAT, gpx asks the respective OS credential manager (or deletes the file on Windows) to delete the secret permanently.
 
 ## Related commands
 
