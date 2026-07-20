@@ -27,7 +27,7 @@ gpx remove personal
 ```
 
 Expected output:
-```
+```text
 Profile 'personal' removed successfully.
 ```
 
@@ -40,7 +40,7 @@ gpx remove work
 ```
 
 Expected output:
-```
+```text
 cannot remove active profile. Use --force
 ```
 
@@ -55,7 +55,7 @@ gpx remove work --force
 When you remove a profile:
 1. It is deleted from `~/.gpx/profiles.json`.
 2. **For SSH profiles:** The SSH key is **not** deleted. To prevent accidental data loss, gpx moves the key pair to `~/.ssh/gpx-removed/` so you can recover it later if needed. The profile's `Host` block is removed from `~/.ssh/config`.
-3. **For PAT profiles:** The Personal Access Token is securely deleted from your operating system's keychain.
+3. **For PAT profiles:** The Personal Access Token is securely deleted from your operating system's keychain (or local secure file on Windows).
 
 ## Related commands
 
