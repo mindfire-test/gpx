@@ -150,7 +150,7 @@ describe('use command', () => {
     mocks.validateSshKeyForProfile.mockReturnValue({ exists: false, permissionOk: false });
 
     const code = await runUseCommand('work', true, false);
-    
+
     expect(code).toBe(ExitCode.SUCCESS);
     expect(consoleOutput.some(msg => msg.includes('SSH key not found: ~/.ssh/missing'))).toBe(true);
   });
@@ -164,7 +164,7 @@ describe('use command', () => {
     mocks.validateSshKeyForProfile.mockReturnValue({ exists: true, permissionOk: false });
 
     const code = await runUseCommand('work', true, false);
-    
+
     expect(code).toBe(ExitCode.SUCCESS);
     expect(consoleOutput.some(msg => msg.includes('SSH key permissions not strict'))).toBe(true);
   });
