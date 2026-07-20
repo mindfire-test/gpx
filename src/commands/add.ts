@@ -9,6 +9,7 @@ import { upsertSshConfigForProfile } from '../core/sshConfigManagement/sshconfig
 import { validatePat } from '../core/githubManagement/validatePat';
 import { storePatForProfile } from '../core/credentialManagement/credentialStore';
 import { ensureCredentialHelperAdded } from '../core/credentialManagement/ensureHelper';
+import { password } from '@inquirer/prompts';
 
 const runSshAddCommand = async (args: AddArgs): Promise<number> => {
   try {
@@ -161,7 +162,10 @@ const runPatAddCommand = async (args: AddArgs): Promise<number> => {
       if (args.noInteractive) {
         throw new ProfileError('PAT is required in --no-interactive mode.', ExitCode.INVALID_INPUT);
       }
-      patToken = await ask('Enter your GitHub Personal Access Token (PAT): ');
+      patToken = await password({
+        message: 'Enter your GitHub Personal Access Token (PAT): ',
+        mask: '*',
+      });
     }
     if (!patToken) {
       throw new ProfileError('PAT is required for PAT-based profiles.', ExitCode.INVALID_INPUT);
