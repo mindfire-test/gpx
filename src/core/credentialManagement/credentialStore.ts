@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const getCredentialFilePath = (profileName: string): string => {
-  return path.join(CREDENTIALS_DIR, `${profileName}.json`);
+  return path.join(CREDENTIALS_DIR, `${path.basename(profileName)}.json`);
 };
 
 const ensureCredentialsDir = (): void => {
