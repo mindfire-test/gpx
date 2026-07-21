@@ -3,6 +3,27 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+## **Standalone Installer**
+
+<Tabs groupId="os">
+<TabItem value="mac-linux" label="macOS & Linux" default>
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/mindfiredigital/gpx/main/scripts/install.sh | bash
+```
+
+</TabItem>
+<TabItem value="windows" label="Windows (PowerShell)">
+
+```powershell
+iwr -useb https://raw.githubusercontent.com/mindfiredigital/gpx/main/scripts/install.ps1 | iex
+```
+
+</TabItem>
+</Tabs>
+
+## **npm**
+
 <Tabs groupId="package-managers">
 <TabItem value="npm" label="npm" default>
 
