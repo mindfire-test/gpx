@@ -16,9 +16,17 @@ if (-not (Test-Path $InstallBin)) {
     New-Item -ItemType Directory -Force -Path $InstallBin | Out-Null
 }
 
-# Download the binary
+# Download the binary to a temporary location first
+$TempPath = Join-Path $InstallBin "gpx.exe.tmp"
 Write-Host "Downloading latest version of GPX from $DownloadUrl..."
-Invoke-WebRequest -Uri $DownloadUrl -OutFile $DestPath -UseBasicParsing
+try {
+    Invoke-WebRequest -Uri $DownloadUrl -OutFile $TempPath -UseBasicParsing
+    Move-Item -Path $TempPath -Destination $DestPath -Force
+} finally {
+    if (Test-Path $TempPath) {
+        Remove-Item -Path $TempPath -Force
+    }
+}
 
 # Update user PATH environment variable if needed
 $UserPath = [Environment]::GetEnvironmentVariable("PATH", "User")
