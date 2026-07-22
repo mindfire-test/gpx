@@ -45,7 +45,7 @@ if ! curl -fsSL "$DOWNLOAD_URL" -o "$TMP_FILE"; then
     exit 1
 fi
 
-chmod +x "$TMP_FILE"
+chmod 0755 "$TMP_FILE"
 
 # Move to install directory
 echo "Installing to ${DEST}..."
