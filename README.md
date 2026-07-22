@@ -9,7 +9,22 @@ As a **nvm but for git profiles**. One command to switch your name, email, and S
 --- 
 
 ## Installation
-gpx is published on the npm registry. Install it globally using your preferred package manager:
+
+### **Option 1 : Standalone Installer**
+You can install the compiled binaries directly using the terminal.
+
+**macOS & Linux**
+```bash
+curl -fsSL https://raw.githubusercontent.com/mindfiredigital/gpx/main/scripts/install.sh | bash
+```
+
+**Windows (PowerShell)**
+```powershell
+iwr -useb https://raw.githubusercontent.com/mindfiredigital/gpx/main/scripts/install.ps1 | iex
+```
+
+### **Option 2 : via npm**
+If you prefer, `gpx` is also published on the npm registry. Install it globally using your preferred package manager:
 
 ```bash
 # Using npm
