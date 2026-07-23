@@ -1,4 +1,5 @@
 $ErrorActionPreference = "Stop"
+$ProgressPreference = 'SilentlyContinue'
 
 $Repo = "mindfiredigital/gpx"
 $BinaryName = "gpx-windows-x64.exe"
@@ -20,7 +21,11 @@ if (-not (Test-Path $InstallBin)) {
 $TempPath = Join-Path $InstallBin "gpx.exe.tmp"
 Write-Host "Downloading latest version of GPX from $DownloadUrl..."
 try {
-    Invoke-WebRequest -Uri $DownloadUrl -OutFile $TempPath -UseBasicParsing
+    if (Get-Command "curl.exe" -ErrorAction SilentlyContinue) {
+        curl.exe -# -fSL "$DownloadUrl" -o "$TempPath"
+    } else {
+        Invoke-WebRequest -Uri $DownloadUrl -OutFile $TempPath -UseBasicParsing
+    }
     Move-Item -Path $TempPath -Destination $DestPath -Force
 } finally {
     if (Test-Path $TempPath) {
