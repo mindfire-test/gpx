@@ -39,7 +39,7 @@ echo "Downloading latest version of GPX from ${DOWNLOAD_URL}..."
 
 # Download binary to a temporary location
 TMP_FILE=$(mktemp)
-if ! curl -fsSL "$DOWNLOAD_URL" -o "$TMP_FILE"; then
+if ! curl -# -fSL "$DOWNLOAD_URL" -o "$TMP_FILE"; then
     echo "Error: Failed to download binary from $DOWNLOAD_URL"
     rm -f "$TMP_FILE"
     exit 1
