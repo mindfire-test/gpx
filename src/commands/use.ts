@@ -10,9 +10,16 @@ import {
   sshAliasToHttps,
   httpsToSshAlias,
   safeGit,
+  getExpectedProfile,
 } from '../core/gitconfig';
-import { ExitCode, PLATFORM } from '../lib/constants';
-import { handleCommandError, printJson, printSuccess, printWarn } from '../utils/output';
+import { ExitCode } from '../lib/constants';
+import {
+  handleCommandError,
+  printJson,
+  printSuccess,
+  printWarn,
+  printHuman,
+} from '../utils/output';
 import { ProfileError } from '../core/profileManagement/errorClass';
 import { upsertSshConfigForProfile } from '../core/sshConfigManagement/sshconfig';
 import { validateSshKeyForProfile } from '../core/sshConfigManagement/sshKeyExistencePermissionCheck';
@@ -91,13 +98,6 @@ export const runUseCommand = async (
         }
       }
     } else if (authMethod === 'pat') {
-      if (PLATFORM === 'win32') {
-        throw new ProfileError(
-          'PAT authentication is not supported on Windows.',
-          ExitCode.INVALID_INPUT
-        );
-      }
-
       ensureCredentialHelperAdded();
 
       if (local && isInsideGitRepo()) {
@@ -150,6 +150,12 @@ export const runUseCommand = async (
     } else {
       for (const warning of warnings) printWarn(`Warning: ${warning}`);
       printSuccess(`Switched to ${profile.name} (${scope})`);
+      if (local && isInsideGitRepo()) {
+        const expectedProfile = getExpectedProfile();
+        if (!expectedProfile) {
+          printHuman(`\n💡 Tip: To prevent accidental commits, run 'gpx guard'`);
+        }
+      }
     }
 
     return ExitCode.SUCCESS;

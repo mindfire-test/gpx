@@ -9,7 +9,7 @@ import { upsertSshConfigForProfile } from '../core/sshConfigManagement/sshconfig
 import { validatePat } from '../core/githubManagement/validatePat';
 import { storePatForProfile } from '../core/credentialManagement/credentialStore';
 import { ensureCredentialHelperAdded } from '../core/credentialManagement/ensureHelper';
-import { PLATFORM } from '../lib/constants';
+import { password } from '@inquirer/prompts';
 
 const runSshAddCommand = async (args: AddArgs): Promise<number> => {
   try {
@@ -148,13 +148,6 @@ const runSshAddCommand = async (args: AddArgs): Promise<number> => {
 
 const runPatAddCommand = async (args: AddArgs): Promise<number> => {
   try {
-    if (PLATFORM === 'win32') {
-      throw new ProfileError(
-        'PAT authentication is not supported on Windows.',
-        ExitCode.INVALID_INPUT
-      );
-    }
-
     // Validate profile name
     const nameValidation = validateProfileName(args.name);
     if (!nameValidation.valid) {
@@ -164,14 +157,24 @@ const runPatAddCommand = async (args: AddArgs): Promise<number> => {
       );
     }
 
-    if (!args.pat) {
+    let patToken = args.pat;
+    if (!patToken) {
+      if (args.noInteractive) {
+        throw new ProfileError('PAT is required in --no-interactive mode.', ExitCode.INVALID_INPUT);
+      }
+      patToken = await password({
+        message: 'Enter your GitHub Personal Access Token (PAT): ',
+        mask: '*',
+      });
+    }
+    if (!patToken) {
       throw new ProfileError('PAT is required for PAT-based profiles.', ExitCode.INVALID_INPUT);
     }
 
     printHuman('Validating PAT with GitHub...');
     let identity: { login: string };
     try {
-      identity = await validatePat(args.pat);
+      identity = await validatePat(patToken);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'PAT validation failed';
       throw new ProfileError(message, ExitCode.INVALID_INPUT);
@@ -217,11 +220,11 @@ const runPatAddCommand = async (args: AddArgs): Promise<number> => {
 
     await addProfile(profileToAdd);
 
-    await storePatForProfile(args.name, args.pat);
+    await storePatForProfile(args.name, patToken);
 
     ensureCredentialHelperAdded();
 
-    args.pat = '';
+    patToken = '';
 
     const payload = {
       profile: {

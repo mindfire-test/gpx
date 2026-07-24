@@ -4,6 +4,7 @@ const sidebars: SidebarsConfig = {
   docs: [
     'Introduction',
     'Installation',
+    'Quick Start Guide',
     {
       type: 'category',
       label: 'Commands',
@@ -11,6 +12,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'commands/Add',
         'commands/Use',
+        'commands/Guard',
         'commands/Ls',
         'commands/Current',
         'commands/Remove',
